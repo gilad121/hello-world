@@ -226,11 +226,11 @@ def test_and_save( epoch):
 
     
     
-
+tf.reset_default_graph()
 sess = tf.Session()
 
-train_x, train_y = get_data_set("train")
-test_x, test_y = get_data_set("test")
+# train_x, train_y = get_data_set("train")
+# test_x, test_y = get_data_set("test")
 x, y,loss, optimizer , correct_prediction ,accuracy, y_pred_cls ,keep_prob2= model()
 global_accuracy = 0
 
@@ -238,7 +238,6 @@ global_accuracy = 0
 _BATCH_SIZE = 128
 _EPOCH = 300
 
-tf.reset_default_graph()
 sess.run(tf.global_variables_initializer())
 
 total_parameters = 0
