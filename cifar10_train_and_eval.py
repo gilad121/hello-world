@@ -141,39 +141,39 @@ def train():
 					      graph_def=sess.graph_def)
 
       for step in xrange(FLAGS.max_steps):
-	start_time = time.time()
-	_, loss_value = sess.run([train_op, loss])
-	duration = time.time() - start_time
+        start_time = time.time()
+		_, loss_value = sess.run([train_op, loss])
+        duration = time.time() - start_time
 
-	assert not np.isnan(loss_value), 'Model diverged with loss = NaN'
+        assert not np.isnan(loss_value), 'Model diverged with loss = NaN'
 
-	if step % 10 == 0:
-	  num_examples_per_step = FLAGS.batch_size
-	  examples_per_sec = num_examples_per_step / duration
-	  sec_per_batch = float(duration)
+	    if step % 10 == 0:
+	      num_examples_per_step = FLAGS.batch_size
+	      examples_per_sec = num_examples_per_step / duration
+	      sec_per_batch = float(duration)
 
-	  format_str = ('%s: step %d, loss = %.2f (%.1f examples/sec; %.3f '
-			'sec/batch)')
-	  print (format_str % (datetime.now(), step, loss_value,
-			       examples_per_sec, sec_per_batch))
+	      format_str = ('%s: step %d, loss = %.2f (%.1f examples/sec; %.3f '
+			            'sec/batch)')
+	      print (format_str % (datetime.now(), step, loss_value,
+			                   examples_per_sec, sec_per_batch))
 
         EVAL_STEP = 10
         EVAL_NUM_EXAMPLES = 1024
         if step % EVAL_STEP == 0:
-	  prec_train = evaluate_set (sess, top_k,      EVAL_NUM_EXAMPLES)
-	  prec_eval  = evaluate_set (sess, top_k_eval, EVAL_NUM_EXAMPLES)
+	      prec_train = evaluate_set (sess, top_k,      EVAL_NUM_EXAMPLES)
+	      prec_eval  = evaluate_set (sess, top_k_eval, EVAL_NUM_EXAMPLES)
           print('%s: precision train = %.3f' % (datetime.now(), prec_train))
           print('%s: precision eval  = %.3f' % (datetime.now(), prec_eval))
 
-	if step % 100 == 0:
-	  summary_str = sess.run(summary_op, feed_dict={summary_train_prec: prec_train,
+	    if step % 100 == 0:
+	      summary_str = sess.run(summary_op, feed_dict={summary_train_prec: prec_train,
                                                   summary_eval_prec:  prec_eval})
-	  summary_writer.add_summary(summary_str, step)
+	      summary_writer.add_summary(summary_str, step)
 
-	# Save the model checkpoint periodically.
-	if step % 1000 == 0 or (step + 1) == FLAGS.max_steps:
-	  checkpoint_path = os.path.join(FLAGS.train_dir, 'model.ckpt')
-	  saver.save(sess, checkpoint_path, global_step=step)
+	    # Save the model checkpoint periodically.
+	    if step % 1000 == 0 or (step + 1) == FLAGS.max_steps:
+	      checkpoint_path = os.path.join(FLAGS.train_dir, 'model.ckpt')
+	      saver.save(sess, checkpoint_path, global_step=step)
 
 
 def main(argv=None):  # pylint: disable=unused-argument
